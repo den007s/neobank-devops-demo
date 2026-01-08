@@ -1,0 +1,43 @@
+name: NeoBank CI/CD Pipeline
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-test-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Build
+      run: |
+        echo "Building NeoBank API..."
+
+    - name: Run Tests
+      run: |
+        echo "Running unit tests..."
+        echo "All tests passed"
+
+    - name: Performance Test (simulate)
+      run: |
+        echo "P99 latency = 15ms" > perf.txt
+
+    - name: Performance Gate
+      run: |
+        LATENCY=$(grep -o '[0-9]\+' perf.txt)
+        echo "Detected P99 latency: $LATENCY ms"
+
+        if [ "$LATENCY" -gt 10 ]; then
+          echo "❌ Performance gate FAILED"
+          exit 1
+        else
+          echo "✅ Performance gate PASSED"
+        fi
+
+    - name: Deploy
+      if: success()
+      run: |
+        echo "Deploying NeoBank API to production..."
