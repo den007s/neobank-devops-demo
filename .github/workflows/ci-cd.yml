@@ -23,12 +23,24 @@ jobs:
 
     - name: Performance Test (simulate)
       run: |
-        echo "P99 latency = 25ms" > perf.txt
+        echo "P99 latency = 15ms" > perf.txt
 
     - name: Performance Gate
       run: |
-        echo "❌ Performance gate FAILED – P99 latency too high"
-        exit 1
+        echo "Evaluating performance metrics..."
+
+        P99=25
+        THRESHOLD=10
+
+        echo "P99 latency = ${P99}ms"
+        echo "Threshold = ${THRESHOLD}ms"
+
+        if [ "$P99" -gt "$THRESHOLD" ]; then
+          echo "❌ Performance gate FAILED (P99 too high)"
+          exit 1
+        else
+          echo "✅ Performance gate PASSED"
+        fi
 
 
     - name: Deploy
