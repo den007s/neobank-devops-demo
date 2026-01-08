@@ -27,15 +27,9 @@ jobs:
 
     - name: Performance Gate
       run: |
-        LATENCY=$(grep -o '[0-9]\+' perf.txt)
-        echo "Detected P99 latency: $LATENCY ms"
+        echo "❌ Performance gate FAILED – P99 latency too high"
+        exit 1
 
-        if [ "$LATENCY" -gt 10 ]; then
-          echo "❌ Performance gate FAILED"
-          exit 1
-        else
-          echo "✅ Performance gate PASSED"
-        fi
 
     - name: Deploy
       if: success()
