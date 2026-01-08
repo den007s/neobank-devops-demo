@@ -23,7 +23,7 @@ jobs:
 
     - name: Performance Test (simulate)
       run: |
-        echo "P99 latency = 15ms" > perf.txt
+        echo "P99 latency = 25ms" > perf.txt
 
     - name: Performance Gate
       run: |
